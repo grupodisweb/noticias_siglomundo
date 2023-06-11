@@ -1,0 +1,55 @@
+{% extends "navbar.html" %}
+{% block title %} Página principal {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+{{super()}}
+<div class="container">
+    <div class="row no-outline-row align-items-start">
+        <div class="col-md-8">
+            <div class="row"><img class="news-img" src="{{ url_for('static', filename='/img/argentinacampeon.jpg') }}">
+                Argentina, campeón del mundo: de la mano de Messi y Dibu, le ganó a Francia y consiguió su tercera
+                estrella ⭐⭐⭐
+
+                <br>
+                <a href="noticia-campeon">Argentina</a>
+            </div>
+            <div class="row">
+            <div class="col"><img class="news-img" src="{{ url_for('static', filename='./img/tablero-didactico.jpg') }}">
+                Fue asesinado a sangre fría por la hermanastra del amigo de su nieto, usand...
+                <br>
+                <a href="noticia-abuelo">El abuelo de la empanada murio</a>
+            </div>
+            <div class="col"><img class="news-img" src="{{ url_for('static', filename='/img/pradera.jpg') }}">
+                Una nueva especie de perrito de las praderas fue encontrado, puede cambiar ...
+                <br>
+                <a href="noticia-perrito">Nueva especie descubierta</a>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row small-row">
+                <div class="info-column">
+                    <h1>Titulo columna1</h1>
+                    <p>blablablalbalbla</p>
+                    <p>ssssssssssssssssssss</p>
+                    <p>sssssssssssssssssssss</p>
+                    <p>hhhhhhhhhhhhhhhhhhhhh</p>
+                    <p>juuuuuuuuuuujyuytjtjtj</p>
+                </div>
+                <div class="info-column">
+                    <h1>Titulo columna2</h1>
+                    <p>blablablalbalbla</p>
+                    <p>ssssssssssssssssssss</p>
+                    <p>sssssssssssssssssssss</p>
+                    <p>hhhhhhhhhhhhhhhhhhhhh</p>
+                    <p>juuuuuuuuuuujyuytjtjtj</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
