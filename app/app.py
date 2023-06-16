@@ -25,4 +25,12 @@ def noticia_abuelo():
 def inicio_sesion():
     return render_template('inicio-sesion.html')
 
+@app.route("/noticia-nadadora")
+def nadadora():
+    return render_template('noticia-nadadora.html')
+
+@app.route("/categoria-deportes")
+def deportes():
+    return render_template('categoria-deportes.html')
+
 app.run(debug=True)
