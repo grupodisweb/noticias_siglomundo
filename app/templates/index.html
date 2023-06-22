@@ -9,23 +9,22 @@
 <div class="container">
     <div class="row no-outline-row align-items-start">
         <div class="col-md-8">
-            <div class="row"><img class="news-img" src="{{ url_for('static', filename='/img/argentinacampeon.jpg') }}">
-                Argentina, campeón del mundo: de la mano de Messi y Dibu, le ganó a Francia y consiguió su tercera
-                estrella ⭐⭐⭐
+            <div class="row"><img class="news-img" src= {{noticias[tamaño].obtenerImagen()}} >
+                {{ noticias[tamaño].resumirSubtitulo() }}...
 
                 <br>
-                <a href="noticia-campeon">Argentina</a>
+                <a href="noticias/{{noticias[tamaño].id}}">{{ noticias[tamaño].titulo }}</a>
             </div>
             <div class="row">
-            <div class="col"><img class="news-img" src="{{ url_for('static', filename='./img/tablero-didactico.jpg') }}">
-                Fue asesinado a sangre fría por la hermanastra del amigo de su nieto, usand...
+            <div class="col"><img class="news-img" src= {{noticias[tamaño-1].obtenerImagen()}}>
+                {{ noticias[tamaño-1].resumirSubtitulo() }}...
                 <br>
-                <a href="noticia-abuelo">El abuelo de la empanada murio</a>
+                <a href="/noticias/{{noticias[tamaño-1].id}}">{{ noticias[tamaño-1].titulo }}</a>
             </div>
-            <div class="col"><img class="news-img" src="{{ url_for('static', filename='/img/pradera.jpg') }}">
-                Una nueva especie de perrito de las praderas fue encontrado, puede cambiar ...
+            <div class="col"><img class="news-img" src= {{noticias[tamaño-2].obtenerImagen()}}>
+                {{ noticias[tamaño-2].resumirSubtitulo() }}...
                 <br>
-                <a href="noticia-perrito">Nueva especie descubierta</a>
+                <a href="/noticias/{{noticias[tamaño-2].id}}">{{ noticias[tamaño-2].titulo }}</a>
             </div>
         </div>
         </div>
