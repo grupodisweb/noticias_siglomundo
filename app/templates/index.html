@@ -13,21 +13,21 @@
                 {{ noticias[tamaño].resumirSubtitulo() }}...
 
                 <br>
-                <a href="noticias/{{noticias[tamaño].id}}">{{ noticias[tamaño].titulo }}</a>
+                <a href="{{url_for('ir_a_noticia',id=(noticias[tamaño].id))}}">{{ noticias[tamaño].titulo }}</a>
             </div>
             <div class="row">
             <div class="col"><img class="news-img" src= {{noticias[tamaño-1].obtenerImagen()}}>
                 {{ noticias[tamaño-1].resumirSubtitulo() }}...
                 <br>
-                <a href="/noticias/{{noticias[tamaño-1].id}}">{{ noticias[tamaño-1].titulo }}</a>
+                <a href="{{url_for('ir_a_noticia',id=(noticias[tamaño-1].id))}}">{{ noticias[tamaño-1].titulo }}</a>
             </div>
             <div class="col"><img class="news-img" src= {{noticias[tamaño-2].obtenerImagen()}}>
                 {{ noticias[tamaño-2].resumirSubtitulo() }}...
                 <br>
-                <a href="/noticias/{{noticias[tamaño-2].id}}">{{ noticias[tamaño-2].titulo }}</a>
+                <a href="{{url_for('ir_a_noticia',id=(noticias[tamaño-2].id))}}">{{ noticias[tamaño-2].titulo }}</a>
             </div>
         </div>
-        </div>
+    </div>
         <div class="col-md-4">
             <div class="row small-row">
                 <div class="info-column">

@@ -12,9 +12,13 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'laspatatassonhechasconquesodepapas'
 
-# categorias: "deportes", "misterio", "general", "tecnologia"
+# POR HACER: crear más noticias coherentes o agregar noticias reales
+#            añadir noticias generales y de tecnología
+#            añadirle a las noticias y categorias las columnas
 
-# noticia7 = Noticia("pogfjvj","/img/nada","jbvttt","gfdty jyf hhh","lorek","ipsum","tecnologia")
+# categorias: "deportes", "misterios", "general", "tecnologia"
+
+# nombreDeNoticia = Noticia("Título","/img/Imagen","Subtítulo","Frase Resaltada","Columna Isquierda(no me anda la letra seta :/ )","Columna Derecha","categoría (asegurate que sea una de las cuatro de ahí arriba, si no va a dar error)")
 noticia5 = Noticia("El Abuelo de la Empanada Murió", "/img/tablero-didactico.jpg", "Fue asesinado a sangre fría por la hermanastra del amigo de su nieto, usando un tateti envenenado.", "Sus huellas fueron encontradas en el tablero.", "Se dice que queria robar el tesoro familiar de la empanada parlante alienigena, sin suerte, pues la misma la llevo a la comisaria. El plan que tenia pareceria impecable a cualquiera, mas el conocimiento de la empanada alienigena la supero.", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aperiam recusandae nostrum commodi quis nesciunt culpa delectus, officia expedita temporibus eveniet ullam enim non natus deleniti adipisci eius libero neque!", "misterios" )
 noticia4 = Noticia("Invasión de nueva especie", "/img/pradera.jpg", "Una nueva especie de perrito de las praderas fue encontrado.","Granjeros alrededor del mundo pierden el sueño ante esta peligrosa especie.","Puede cambiar la forma de sus dientes para roer cualquier material, aunque le toma algunos dias adaptarse, granjeros alrededor del mundo estan asustados que esto podria arruinar sus cosechas para siempre","Parece salida de una película, o de un videojuego, pero esta especie es definitivamente, absolutamente real y nadie sabe de dónde salió ni cómo detenerla. Algunos científicos tienen la teoría de que son en realidad alienígenas invasores, pues el ADN de estas criaturas no se parece a nada visto anteriormente.", "misterios" )
 noticia3 = Noticia("Un Desmayo Inesperado", "/img/nadadora.webp", "La nadadora artística estadounidense Anita Alvarez, sufrió un desmayo.","Por suerte, fue salvada por su entrenadora.", "No ha sido autorizada para la competición por equipos, prueba que se desarrolla el viernes en los Mundiales de Budapest, según la lista de participantes actualizada. Alvarez, que perdió el conocimiento al final de su ejercicio individual, figuraba en todas las listas precedentes del equipo estadounidense, pero ha sido remplazada por Yujin Chang poco antes del inicio de la prueba. “Es una decisión tomada por la FINA”, declaró Selina Shah, médica del equipo estadounidense de natación artística. “Desde mi punto de vista, ella habría podido participar”, añadió.", "La nadadora de 25 años fue rescatada por su entrenadora, la española Andrea Fuentes, que se tiró al agua vestida con pantalón corto y camiseta, para lograr sacarla a la superficie con sus brazos. ”Creo que estuvo al menos dos minutos sin respirar porque sus pulmones estaban llenos de agua”, contó más tarde la entrenadora. Alvarez ha tenido que pasar un examen médico completo el viernes por la mañana, Luego de eso, se conoció la noticia de que Alvarez no participaría de la competencia.", "deportes" )
@@ -40,30 +44,19 @@ def ir_a_noticia(id):
     if not noticia_buscada:
         return abort(404)
     return render_template("noticia-base.html", noticia_buscada=noticia_buscada, noticias=noticias)
-
-@app.route("/noticia-campeon")
-def noticia_campeon():
-    return render_template('noticia-campeon.html')
-
-@app.route("/noticia-perrito")
-def noticia_perrito():
-    return render_template('noticia-perrito.html')
-
-@app.route("/noticia-abuelo")
-def noticia_abuelo():
-    return render_template('noticia-abuelo.html')
+@app.route("/categorias/<categoria>")
+def ir_a_categoria(categoria):
+    noticias_en_categoria = []
+    for noticia in g.lista_noticias:
+        if (noticia.categoria == categoria):
+            noticias_en_categoria.append(noticia)
+    if not noticias_en_categoria:
+        return abort(404)
+    return render_template("categorias-base.html", noticias=noticias_en_categoria)  
 
 @app.route("/inicio-sesion")
 def inicio_sesion():
     return render_template('inicio-sesion.html')
-
-@app.route("/noticia-nadadora")
-def nadadora():
-    return render_template('noticia-nadadora.html')
-
-@app.route("/categoria-deportes")
-def deportes():
-    return render_template('categoria-deportes.html')
 
 @app.route('/cargar-noticias', methods=['GET', 'POST'])
 def cargarNoticias():

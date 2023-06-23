@@ -1,0 +1,21 @@
+{% extends "navbar.html" %}
+{% block title %} Categoría: {{noticias[0].categoria}} {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+{{super()}}
+<div class="row no-outline-row align-items-start">
+{% for noticia in noticias %}
+    <div class="col-md-8">
+        <div class="row"><img class="news-img" src= {{noticia.obtenerImagen()}} >
+            {{ noticia.resumirSubtitulo() }}...
+
+            <br>
+            <a href="{{url_for('ir_a_noticia',id=(noticia.id))}}">{{ noticia.titulo }}</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
