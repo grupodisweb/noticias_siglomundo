@@ -10,5 +10,5 @@ class SubirNoticia(FlaskForm):
     resaltado = StringField("Ingrese la frase más importante del texto", validators=[DataRequired()])
     columna1 = StringField("Ingrese el texto que irá en la primera columna", validators=[DataRequired()])
     columna2 = StringField("Ingrese el texto que irá en la segunda columna", validators=[DataRequired()])
-    categoria = SelectField(choices=[('a', 'deportes'),('b','misterios'),('c','general'),('c', 'tecnologia')], validators=[DataRequired()])
+    categoria = SelectField(choices=[('deportes', 'Deportes'),('misterios','Misterios'),('general','General'),('tecnologia', 'Tecnologia')], validators=[DataRequired()])
     submit = SubmitField("Ingresar")
