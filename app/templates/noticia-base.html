@@ -7,7 +7,7 @@
 {% block body %}
 {{super()}}
     <div class="container">
-        <div class="row"><img class="newspage-image" src='{{noticia_buscada.obtenerImagen()}}'> </div>
+        <div class="row"><img class="newspage-image" src='/static{{noticia_buscada.imagen}}'> </div>
         <div class="row">
             <h1 class="news-title fs-1">{{noticia_buscada.titulo}}</h1> 
             <div class="fs-2">{{noticia_buscada.subtitulo}}</div>

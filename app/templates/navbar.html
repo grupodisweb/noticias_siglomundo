@@ -53,6 +53,7 @@
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='misterios')}}">Misterios</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='general')}}">General</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='tecnologia')}}">Tecnología</a></li>
+                                <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='internacional')}}">Internacional</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -61,13 +62,13 @@
                         </li>
                     </ul>
                     <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">➤</button>
                     </form>
                 </div>
             </div>
         </nav>
         {% endblock %}
-        {% block imagen %} <img class="newspage-image" src={% endblock %}
+        {% block imagen %} <img class="newspage-image" src={% endblock %}>
     </body>
 </html>

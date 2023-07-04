@@ -9,23 +9,26 @@
 <div class="container">
     <div class="row no-outline-row align-items-start">
         <div class="col-md-8">
-            <div class="row"><img class="news-img" src= {{noticias[tamaño].obtenerImagen()}} >
-                {{ noticias[tamaño].resumirSubtitulo() }}...
+            {% for noticia in noticias  %}
+                {% if noticia.id == (tamano-1) %}
+                <div class="row"><img class="news-img" src= '/static{{noticia.imagen}}' >
+                    {{ resumirSubtitulo(noticia) }}...
 
-                <br>
-                <a href="{{url_for('ir_a_noticia',id=(noticias[tamaño].id))}}">{{ noticias[tamaño].titulo }}</a>
-            </div>
-            <div class="row">
-            <div class="col"><img class="news-img" src= {{noticias[tamaño-1].obtenerImagen()}}>
-                {{ noticias[tamaño-1].resumirSubtitulo() }}...
-                <br>
-                <a href="{{url_for('ir_a_noticia',id=(noticias[tamaño-1].id))}}">{{ noticias[tamaño-1].titulo }}</a>
-            </div>
-            <div class="col"><img class="news-img" src= {{noticias[tamaño-2].obtenerImagen()}}>
-                {{ noticias[tamaño-2].resumirSubtitulo() }}...
-                <br>
-                <a href="{{url_for('ir_a_noticia',id=(noticias[tamaño-2].id))}}">{{ noticias[tamaño-2].titulo }}</a>
-            </div>
+                    <br>
+                    <a href="{{url_for('ir_a_noticia',id=(noticia.id))}}">{{ noticia.titulo }}</a>
+                </div>
+             {% endif %}   
+             {% endfor %}   
+                <div class="row">
+            {% for noticia in noticias  %}
+                {% if noticia.id != (tamano-1) %}
+                <div class="col"><img class="news-img" src= '/static{{noticia.imagen}}'>
+                    {{ resumirSubtitulo(noticia) }}...
+                    <br>
+                    <a href="{{url_for('ir_a_noticia',id=(noticia.id))}}">{{ noticia.titulo }}</a>
+                </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
         <div class="col-md-4">

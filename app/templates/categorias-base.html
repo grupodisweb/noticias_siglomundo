@@ -9,8 +9,8 @@
 <div class="row no-outline-row align-items-start">
 {% for noticia in noticias %}
     <div class="col-md-8">
-        <div class="row"><img class="news-img" src= {{noticia.obtenerImagen()}} >
-            {{ noticia.resumirSubtitulo() }}...
+        <div class="row"><img class="news-img" src= '/static{{noticia.imagen}}' >
+            {{ resumirSubtitulo(noticia) }}...
 
             <br>
             <a href="{{url_for('ir_a_noticia',id=(noticia.id))}}">{{ noticia.titulo }}</a>

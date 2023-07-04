@@ -24,6 +24,7 @@ body {
   margin: auto!important;
   outline: auto !important;
   outline-color: #d15e92 !important;
+  background-image: url("../../static/img/loginbackground.jpeg");
 }
 
 .form-signin .checkbox {
