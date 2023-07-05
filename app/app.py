@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, request, url_for 
+from flask import Flask, flash, redirect, request, url_for, jsonify 
 from flask import render_template
 from flask import g
 from flask import abort
@@ -9,6 +9,7 @@ from Noticia import Noticia
 from SubirNoticia import SubirNoticia
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from ModificarNoticia import Modificar
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -107,5 +108,61 @@ def cargarNoticias():
         return flash("Datos de formulario incorrectos.")
     else:   
         return render_template('subir-noticia.html', form=form)
+
+@app.route('/gestion')
+def gestion():
+    noticias = Noticia.query.all()
+    return render_template('gestion.html',noticias=noticias)
+
+@app.route('/modificar/<int:id>', methods=['GET', 'POST'])
+def modificar(id):
+    modificar = Modificar()
+
+    noticia_a_modificar = Noticia.query.get_or_404(id)
+
+    if request.method == 'POST':
+        if modificar.validate_on_submit():
+
+            noticia_a_modificar.titulo    = modificar.titulo.data
+            noticia_a_modificar.imagen    = modificar.imagen.data
+            noticia_a_modificar.subtitulo = modificar.subtitulo.data
+            noticia_a_modificar.resaltado = modificar.resaltado.data
+            noticia_a_modificar.columna1  = modificar.columna1.data
+            noticia_a_modificar.columna2  = modificar.columna2.data
+            noticia_a_modificar.categoria = modificar.categoria.data
+            
+            db.session.add(noticia_a_modificar)
+            db.session.commit()
+
+            flash(f"Noticia '{noticia_a_modificar.titulo}' modificada exitosamente.")
+            return redirect("../noticias/" + str(noticia_a_modificar.id))
+        else:
+            flash("Los datos enviados no son válidos. Revisar el formulario.")
+    
+    modificar.titulo.data    = noticia_a_modificar.titulo
+    modificar.imagen.data    = noticia_a_modificar.imagen
+    modificar.subtitulo.data = noticia_a_modificar.subtitulo
+    modificar.resaltado.data = noticia_a_modificar.resaltado
+    modificar.columna1.data  = noticia_a_modificar.columna1
+    modificar.columna2.data  = noticia_a_modificar.columna2
+    modificar.categoria.data = noticia_a_modificar.categoria
+
+    return render_template("modificar-noticia.html", form=modificar, noticia_a_modificar=noticia_a_modificar)
+
+@app.route('/eliminar/<int:id>', methods=['DELETE'])
+def eliminar(id):
+    if request.method == 'DELETE':
+
+        noticia = Noticia.query.get_or_404(id)
+        if not noticia:
+            return jsonify({'noexiste': f'Error. Noticia de ID {id} inexistente'}), 404
+        
+        titulo = noticia.titulo
+        db.session.delete(noticia)
+        db.session.commit()
+
+        return jsonify({'exito': f'Noticia "{titulo}" ha sido eliminada.'}), 200
+    else:
+        return jsonify({'errordemetodo': 'Método no permitido'}), 405
 
 app.run(debug=True)

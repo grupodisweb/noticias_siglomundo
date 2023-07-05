@@ -1,0 +1,51 @@
+{% extends "navbar.html" %}
+{% block title %} Gestión de Noticias {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+{{super()}}
+<div class="container linea-roja">
+    <table class="table col-8 m-auto">
+            {% for noticia in noticias  %}
+                    <tr>
+                        <td><img class="gestion-img" src= '/static{{noticia.imagen}}' > </td>
+                        <td>{{ noticia.titulo }}</td>
+                        <td><a href="{{url_for('modificar',id=(noticia.id))}}">Modificar</a></td>
+                        <td>
+                            <!-- <a class="col-2" style="color: red;" value="{{noticia.id}}" onclick="eliminarNoticia({{noticia.id}})">
+                                Eliminar
+                            </a>-->
+                            <a onclick="eliminarNoticia({{noticia.id}})">Eliminar</a>
+                        </td>
+                    </tr>
+             {% endfor %}
+    </table>   
+</div>
+{% endblock %}
+</html>
+{% block scripts %}
+<script>
+    function eliminarNoticia(id) {
+        if (confirm("¿Estás seguro de que deseas eliminar esta noticia?\n(esta acción no se puede deshacer)")) {
+            fetch(`/eliminar/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if ('exito' in data) {
+                        alert(data.exito);
+                        window.location.reload();
+                    } else {
+                        alert(data.errordemetodo);
+                    }
+                })
+                .catch(error => {
+                    console.errordemetodo(error);
+                    alert('Hubo un error inesperado.');
+                });
+        }
+    }
+</script>
+{% endblock %}
