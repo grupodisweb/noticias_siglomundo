@@ -11,7 +11,7 @@
         <div class="col-md-8">
             {% for noticia in noticias  %}
                 {% if noticia.id == (tamano-1) %}
-                <div class="row"><img class="news-img" src= '/static{{noticia.imagen}}' >
+                <div class="row" data-aos="fade-up"><img class="news-img" src= '/static/img/{{noticia.imagen}}' >
                     {{ resumirSubtitulo(noticia) }}...
 
                     <br>
@@ -19,10 +19,10 @@
                 </div>
              {% endif %}   
              {% endfor %}   
-                <div class="row">
+                <div class="row" data-aos="fade-up">
             {% for noticia in noticias  %}
                 {% if noticia.id != (tamano-1) %}
-                <div class="col"><img class="news-img" src= '/static{{noticia.imagen}}'>
+                <div class="col"><img class="news-img" src= '/static/img/{{noticia.imagen}}'>
                     {{ resumirSubtitulo(noticia) }}...
                     <br>
                     <a href="{{url_for('ir_a_noticia',id=(noticia.id))}}">{{ noticia.titulo }}</a>
@@ -31,24 +31,36 @@
             {% endfor %}
         </div>
     </div>
-        <div class="col-md-4">
-            <div class="row small-row">
-                <div class="info-column">
-                    <h1>Titulo columna1</h1>
-                    <p>blablablalbalbla</p>
-                    <p>ssssssssssssssssssss</p>
-                    <p>sssssssssssssssssssss</p>
-                    <p>hhhhhhhhhhhhhhhhhhhhh</p>
-                    <p>juuuuuuuuuuujyuytjtjtj</p>
-                </div>
-                <div class="info-column">
-                    <h1>Titulo columna2</h1>
-                    <p>blablablalbalbla</p>
-                    <p>ssssssssssssssssssss</p>
-                    <p>sssssssssssssssssssss</p>
-                    <p>hhhhhhhhhhhhhhhhhhhhh</p>
-                    <p>juuuuuuuuuuujyuytjtjtj</p>
-                </div>
+    <div class="col-md-4" data-aos="fade-up">
+        <div class="row small-row">
+            <div class="info-column">
+                <h2>Diego Espínola</h2>
+                <form>
+                    <img class="mb-4" src="../static/img/diego.jpg" alt="500" width="200" height="250">
+                </form>
+                <p>-Conocimientos prácticos de dibujo, animación 2D.</p>
+                <p>-Buen manejo de Krita como programa de dibujo y animación 2D.</p>
+                <p>-Básicos conocimientos de animación 3D.</p>
+                <p>-Manejo básico de Blender con animación 3D.</p>
+                <p>-Algo de conocimiento de motor de videojuegos Unity.</p>
+                <p>-Conocimientos prácticos de RGSS, HTML, JavaScript, Python, C, C++ y C#.</p>
+                <p>-Diseñador gráfico con buen manejo de CorelDraw y Photoshop.</p>
+                
+                <br>
+                <br>
+            </div>
+            <div class="info-column">
+                <h2>Fernando Figueroa</h2>
+                <form>
+                    <img class="mb-4" src="../static/img/fer.jpg" alt="" width="200" height="270">
+                </form>
+                <p>Estudios en paquete Office y operador de PC avanzado.</p>
+                <p>Conocimientos básicos/intermedios en edicion de imágenes y video en Photoshop, Premier PRO, y producción musical en FL Studio.</p>
+                <p>Conocimientos básicos en Linux, algoritmos en bash.</p>
+                <p>Estudios practicos en Python y JavaScript.</p>
+                <p>Desarrollo web, frontend & backend.</p>
+                <p>Conocimientos en programación de Python en IA.</p>
+                <p>Data Science & Machine Learning.</p>
             </div>
         </div>
     </div>

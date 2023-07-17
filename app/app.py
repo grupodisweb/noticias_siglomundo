@@ -5,31 +5,56 @@ from flask import abort
 from flask import session
 from flask_bootstrap import Bootstrap
 from Noticia import Noticia
+from Sesion import SesionForm
 
 from SubirNoticia import SubirNoticia
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from ModificarNoticia import Modificar
+from Registro import RegistroForm
+from werkzeug.security import generate_password_hash, check_password_hash 
+from flask_login import *
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'laspatatassonhechasconquesodepapas'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///noticias_data_base.db'
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
 
 class Noticia(db.Model):
     __tablename__ = "Noticias"
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(50), nullable=False)
+    titulo = db.Column(db.String(100), nullable=False)
     imagen = db.Column(db.String(120), nullable=False)
-    subtitulo = db.Column(db.String(300), nullable=False)
-    resaltado = db.Column(db.String(500), nullable=False)
-    columna1 = db.Column(db.String(2000), nullable=False)
-    columna2 = db.Column(db.String(2000), nullable=False)
-    categoria = db.Column(db.String(16), nullable=False)
+    subtitulo = db.Column(db.String(500), nullable=False)
+    resaltado = db.Column(db.String(1000), nullable=False)
+    columna1 = db.Column(db.String(3000), nullable=False)
+    columna2 = db.Column(db.String(3000), nullable=False)
+    categoria = db.Column(db.String(20), nullable=False)
+
+class Usuario(UserMixin, db.Model):
+    __tablename__ = "Usuarios"
+    id = db.Column(db.Integer, primary_key=True)
+    nombre_usuario = db.Column(db.String(60), unique=True)
+    codigo = db.Column(db.String(128), nullable=False) 
+    email = db.Column(db.String(150), nullable=False)
+    rol = db.Column(db.Integer, nullable=False)
+    @property
+    def password(self):
+        return AttributeError("La contraseña no es visible")
+    @password.setter
+    def password(self, password):
+        self.codigo = generate_password_hash(password)
+    def checkPassword(self, password):
+        return check_password_hash(self.codigo, password) #es asi?
 
 
 with app.app_context():
@@ -39,11 +64,16 @@ with app.app_context():
 
 def resumirSubtitulo(noticia):
     i = 0
+    maximoPalabras = 12
     resumido = ''
     for caracter in noticia.subtitulo:
-        i +=1
-        if (i < 51):
+        if (caracter == ' '):
+            i +=1
+        if (i <= maximoPalabras):
             resumido += caracter
+        if (i > maximoPalabras):
+            break
+
     return resumido
 
 app.jinja_env.globals.update(resumirSubtitulo=resumirSubtitulo)
@@ -85,12 +115,34 @@ def ir_a_categoria(categoria):
         return abort(404)
     return render_template("categorias-base.html", noticias=noticias_en_categoria)  
 
-@app.route("/inicio-sesion")
+@app.route("/inicio-sesion", methods=['POST','GET'])
 def inicio_sesion():
-    return render_template('inicio-sesion.html')
+    form = SesionForm() 
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            usuario = Usuario.query.filter_by(nombre_usuario=form.nombre.data).first()
+            if (usuario):
+                if usuario.checkPassword(form.codigo.data): #
+                    login_user(usuario)
+                    flash('Logged in successfully.')
+                    return redirect('../noticias/1')
+                else:
+                    flash('Contraseña incorrecta') #no, salta acá, aunque la contraseña esté bien
+                    return redirect('../noticias/2')
+            else:
+                flash('Error. Datos inválidos.')
+                return redirect('../noticias/3')
+        else:
+            flash('Error. Datos inválidos.')
+            return redirect('../noticias/4')
+            
+    return render_template('inicio-sesion.html', form=form)
 
 @app.route('/cargar-noticias', methods=['GET', 'POST'])
 def cargarNoticias():
+    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+        flash('Error. No tiene permisos')
+        return redirect(url_for('inicio_sesion'))
     form = SubirNoticia()
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -111,11 +163,17 @@ def cargarNoticias():
 
 @app.route('/gestion')
 def gestion():
+    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+        flash('Error. No tiene permisos')
+        return redirect(url_for('inicio_sesion'))
     noticias = Noticia.query.all()
     return render_template('gestion.html',noticias=noticias)
 
 @app.route('/modificar/<int:id>', methods=['GET', 'POST'])
 def modificar(id):
+    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+        flash('Error. No tiene permisos')
+        return redirect(url_for('inicio_sesion'))
     modificar = Modificar()
 
     noticia_a_modificar = Noticia.query.get_or_404(id)
@@ -151,6 +209,9 @@ def modificar(id):
 
 @app.route('/eliminar/<int:id>', methods=['DELETE'])
 def eliminar(id):
+    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+        flash('Error. No tiene permisos')
+        return redirect(url_for('inicio_sesion'))
     if request.method == 'DELETE':
 
         noticia = Noticia.query.get_or_404(id)
@@ -164,5 +225,22 @@ def eliminar(id):
         return jsonify({'exito': f'Noticia "{titulo}" ha sido eliminada.'}), 200
     else:
         return jsonify({'errordemetodo': 'Método no permitido'}), 405
+
+@app.route('/registro', methods=['POST','GET'])
+def registro():
+    registrarse = RegistroForm()
+    if request.method == 'POST':
+        if registrarse.validate_on_submit():
+            if (registrarse.nombre.data == 'admin1'):
+                rol = 'administrador'
+            else: 
+                rol = 'normal' 
+            usuario_nuevo = Usuario(nombre_usuario=registrarse.nombre.data,password=registrarse.codigo.data,email=registrarse.email.data, rol=rol)
+            db.session.add(usuario_nuevo)
+            db.session.commit() 
+            return redirect('/')
+        else:
+            flash("Los datos enviados no son válidos. Revisar el formulario.")
+    return render_template('registro.html', form=registrarse)
 
 app.run(debug=True)

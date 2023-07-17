@@ -3,13 +3,12 @@
 {% block head %}
 {{ super() }}
 {% endblock %}
-
 {% block body %}
 {{super()}}
 <div class="row no-outline-row align-items-start">
 {% for noticia in noticias %}
-    <div class="col-md-8">
-        <div class="row"><img class="news-img" src= '/static{{noticia.imagen}}' >
+    <div class="col-md-6">
+        <div class="row" data-aos="fade-up"><img class="news-img" src= '/static/img/{{noticia.imagen}}' >
             {{ resumirSubtitulo(noticia) }}...
 
             <br>
@@ -18,4 +17,5 @@
     </div>
 {% endfor %}
 </div>
+
 {% endblock %}

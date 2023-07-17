@@ -3,7 +3,7 @@ from wtforms import *
 from wtforms.validators import DataRequired
 from wtforms.validators import Length
 class Modificar(FlaskForm):
-    titulo = StringField("Ingrese el título de la noticia", validators=[DataRequired(),Length(min=5, max=50,message="El largo del título debe ser mayor a 5 y menor a 50.")])
+    titulo = StringField("Ingrese el título de la noticia", validators=[DataRequired(),Length(min=5, max=100,message="El largo del título debe ser mayor a 5 y menor a 50.")])
     imagen = StringField("Ingrese el link directo a una imagen", validators=[DataRequired()])
     subtitulo = StringField("Ingrese un subtitulo", validators=[DataRequired()])
     resaltado = StringField("Ingrese la frase más importante del texto", validators=[DataRequired()])

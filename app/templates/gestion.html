@@ -1,30 +1,5 @@
 {% extends "navbar.html" %}
 {% block title %} Gestión de Noticias {% endblock %}
-{% block head %}
-{{ super() }}
-{% endblock %}
-
-{% block body %}
-{{super()}}
-<div class="container linea-roja">
-    <table class="table col-8 m-auto">
-            {% for noticia in noticias  %}
-                    <tr>
-                        <td><img class="gestion-img" src= '/static{{noticia.imagen}}' > </td>
-                        <td>{{ noticia.titulo }}</td>
-                        <td><a href="{{url_for('modificar',id=(noticia.id))}}">Modificar</a></td>
-                        <td>
-                            <!-- <a class="col-2" style="color: red;" value="{{noticia.id}}" onclick="eliminarNoticia({{noticia.id}})">
-                                Eliminar
-                            </a>-->
-                            <a onclick="eliminarNoticia({{noticia.id}})">Eliminar</a>
-                        </td>
-                    </tr>
-             {% endfor %}
-    </table>   
-</div>
-{% endblock %}
-</html>
 {% block scripts %}
 <script>
     function eliminarNoticia(id) {
@@ -49,3 +24,28 @@
     }
 </script>
 {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+{{super()}}
+<div class="container linea-roja">
+    <table class="table col-8 m-auto">
+            {% for noticia in noticias  %}
+                    <tr>
+                        <td><img class="gestion-img" src= '/static/img/{{noticia.imagen}}' > </td>
+                        <td>{{ noticia.titulo }}</td>
+                        <td><a href="{{url_for('modificar',id=(noticia.id))}}"> <img class="icon-img" src="../static/img/editar.png"> </a></td>
+                        <td>
+                            <!-- <a class="col-2" style="color: red;" value="{{noticia.id}}" onclick="eliminarNoticia({{noticia.id}})">
+                                Eliminar
+                            </a>  -->
+                            <a onclick="eliminarNoticia({{noticia.id}})"> <img class="icon-img" src="../static/img/borrar.png"> </a>
+                        </td>
+                    </tr>
+             {% endfor %}
+    </table>   
+</div>
+{% endblock %}
+</html>

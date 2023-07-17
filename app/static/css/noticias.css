@@ -30,6 +30,10 @@ body {
     background: #ffe0f8 !important;
 }
 
+.icon-img {
+    width: 2vw;
+}
+
 h1, .fs-4 {
     padding-bottom: 5vw;
 }
