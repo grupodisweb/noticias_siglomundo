@@ -11,6 +11,14 @@
     outline-color: #d15e92;
 }
 
+.row-opposite {
+    outline-color: #ffe0f8 !important;
+    background: #ffe0f8 !important;
+}
+.row-bg {
+    background: #d15e92 !important;
+}
+
 .small-row {
     margin-left: 2vw !important;
     margin-right: 0vw!important;
@@ -28,6 +36,10 @@
 }
 body {
     background: #ffe0f8 !important;
+}
+
+.body-modificar {
+    background: #d15e92 !important;
 }
 
 .icon-img {

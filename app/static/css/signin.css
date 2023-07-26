@@ -27,6 +27,15 @@ body {
   background-image: url("../../static/img/loginbackground.jpeg");
 }
 
+.form-modify {
+  width: 100%!important;
+  max-width: 500px!important;
+  padding: 15px!important;
+  margin: auto!important;
+  outline: auto !important;
+  outline-color: #d15e92 !important;
+}
+
 .form-signin .checkbox {
   font-weight: 400!important;
 }

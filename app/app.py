@@ -6,6 +6,7 @@ from flask import session
 from flask_bootstrap import Bootstrap
 from Noticia import Noticia
 from Sesion import SesionForm
+import os
 
 from SubirNoticia import SubirNoticia
 from flask_sqlalchemy import SQLAlchemy
@@ -29,11 +30,22 @@ migrate = Migrate(app, db)
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
 
+class Categoria(db.Model):
+    __tablename__ = "Categorías"
+    id = db.Column(db.Integer, primary_key=True)
+    nombre_interno = db.Column(db.String(20), unique=True)
+    nombre_impreso = db.Column(db.String(20), unique=True)
+
+class Imagen(db.Model):
+    __tablename__ = "Imágenes"
+    id = db.Column(db.Integer, primary_key=True)
+    directorio = db.Column(db.String(500), unique=True)
+
 class Noticia(db.Model):
     __tablename__ = "Noticias"
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(100), nullable=False)
-    imagen = db.Column(db.String(120), nullable=False)
+    imagen = db.Column(db.String(500), nullable=False)
     subtitulo = db.Column(db.String(500), nullable=False)
     resaltado = db.Column(db.String(1000), nullable=False)
     columna1 = db.Column(db.String(3000), nullable=False)
@@ -45,7 +57,7 @@ class Usuario(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre_usuario = db.Column(db.String(60), unique=True)
     codigo = db.Column(db.String(128), nullable=False) 
-    email = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), unique=True)
     rol = db.Column(db.Integer, nullable=False)
     @property
     def password(self):
@@ -61,6 +73,27 @@ with app.app_context():
     db.create_all()
 
 
+def updateImg():
+    imagenes = Imagen.query.all()
+    lista = []
+    for imagen in imagenes:
+        lista.append(imagen.directorio)
+    for archivo in os.listdir("static/img"):
+        if archivo not in lista:
+            print(archivo)
+            nueva = Imagen(directorio=str(archivo))
+            db.session.add(nueva)
+            db.session.commit()
+
+def getImages():
+    imagenes = Imagen.query.all()
+    imagenes_lista = [(i.directorio,i.directorio) for i in imagenes]
+    return imagenes_lista
+
+def getCategorias():
+    categorias = Categoria.query.all()
+    categorias_lista = [(i.nombre_interno,i.nombre_impreso) for i in categorias]
+    return categorias_lista
 
 def resumirSubtitulo(noticia):
     i = 0
@@ -77,6 +110,9 @@ def resumirSubtitulo(noticia):
     return resumido
 
 app.jinja_env.globals.update(resumirSubtitulo=resumirSubtitulo)
+app.jinja_env.globals.update(updateImg=updateImg)
+app.jinja_env.globals.update(getImages=getImages)
+app.jinja_env.globals.update(getCategorias=getCategorias)
 # POR HACER: crear más noticias coherentes o agregar noticias reales
 #            añadir noticias generales y de tecnología
 #            añadirle a las noticias y categorias las columnas
@@ -124,26 +160,26 @@ def inicio_sesion():
             if (usuario):
                 if usuario.checkPassword(form.codigo.data): #
                     login_user(usuario)
-                    flash('Logged in successfully.')
-                    return redirect('../noticias/1')
+                    flash('Inicio sesión exitoso.')
+                    return redirect('../')
                 else:
-                    flash('Contraseña incorrecta') #no, salta acá, aunque la contraseña esté bien
-                    return redirect('../noticias/2')
+                    flash('Contraseña incorrecta')
             else:
-                flash('Error. Datos inválidos.')
-                return redirect('../noticias/3')
+                flash('Error. Usuario inexistente.')
         else:
             flash('Error. Datos inválidos.')
-            return redirect('../noticias/4')
             
     return render_template('inicio-sesion.html', form=form)
 
 @app.route('/cargar-noticias', methods=['GET', 'POST'])
 def cargarNoticias():
-    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+    updateImg()
+    if not current_user.is_authenticated or current_user.rol != 'administrador':
         flash('Error. No tiene permisos')
         return redirect(url_for('inicio_sesion'))
     form = SubirNoticia()
+    form.imagen.choices = getImages()
+    form.categoria.choices = getCategorias()
     if request.method == 'POST':
         if form.validate_on_submit():
             nuevaNoticia = Noticia(titulo=form.titulo.data, imagen=form.imagen.data, subtitulo=form.subtitulo.data, resaltado=form.resaltado.data, columna1=form.columna1.data, columna2=form.columna2.data, categoria=form.categoria.data)
@@ -159,11 +195,12 @@ def cargarNoticias():
             return redirect("noticias/" + str(nuevaNoticia.id))
         return flash("Datos de formulario incorrectos.")
     else:   
-        return render_template('subir-noticia.html', form=form)
+        texto="Formulario de Subida"
+        return render_template('subir-noticia.html', form=form, texto_importante=texto)
 
 @app.route('/gestion')
 def gestion():
-    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+    if not current_user.is_authenticated or current_user.rol != 'administrador':
         flash('Error. No tiene permisos')
         return redirect(url_for('inicio_sesion'))
     noticias = Noticia.query.all()
@@ -171,7 +208,7 @@ def gestion():
 
 @app.route('/modificar/<int:id>', methods=['GET', 'POST'])
 def modificar(id):
-    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+    if not current_user.is_authenticated or current_user.rol != 'administrador':
         flash('Error. No tiene permisos')
         return redirect(url_for('inicio_sesion'))
     modificar = Modificar()
@@ -204,12 +241,12 @@ def modificar(id):
     modificar.columna1.data  = noticia_a_modificar.columna1
     modificar.columna2.data  = noticia_a_modificar.columna2
     modificar.categoria.data = noticia_a_modificar.categoria
-
-    return render_template("modificar-noticia.html", form=modificar, noticia_a_modificar=noticia_a_modificar)
+    texto="Formulario de Modificación"
+    return render_template("modificar-noticia.html", form=modificar, noticia_a_modificar=noticia_a_modificar, texto_importante=texto)
 
 @app.route('/eliminar/<int:id>', methods=['DELETE'])
 def eliminar(id):
-    if not current_user.is_authenticated() or current_user.rol != 'administrador':
+    if not current_user.is_authenticated or current_user.rol != 'administrador':
         flash('Error. No tiene permisos')
         return redirect(url_for('inicio_sesion'))
     if request.method == 'DELETE':

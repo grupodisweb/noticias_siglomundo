@@ -15,22 +15,28 @@ crossorigin="anonymous"></script>
 {% block body %}
 {{super()}}
     <div class="padding-div">
-    <main class="form-signin" class="text-center" class="singin-thing">
-        <form>
+    <main class="form form-signin" class="text-center" class="singin-thing">
+        <form method="POST" action="#" role="form">
           <img class="mb-4" src="../static/img/login.png" alt="" width="300" height="80">
           <h1 class="h3 mb-3 fw-normal">Por favor, inicie sesión</h1>
-      
+          {{ form.hidden_tag() }}
+          {{ wtf.form_errors(form, hiddens="only") }}
+        
+
           <div class="form-floating">
-            {{ form.nombre(class_='form-control', type_='text') }}
+            {{ wtf.form_field(form.nombre, class='form-control', type='text') }}
           </div>
           <div class="form-floating">
-            {{ form.codigo(class_='form-control ', type_='password') }}
+            {{ wtf.form_field(form.codigo,  class_='form-control', type_='password') }}
           </div>
       
-          {{ form.submit(class='button button--form') }}
+          {{ wtf.form_field(form.submit,  class_='form-control') }}
           <p class="mt-5 mb-3 text-muted">&copy; 2017–2023</p>
         </form>
       </main>
     </div>
 
 {% endblock %}
+{% if form.errors %}
+{{ form.errors }}
+{% endif %}

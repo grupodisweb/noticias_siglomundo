@@ -1,11 +1,9 @@
-{% extends "navbar.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% block title %} Cargar Nueva Noticia {% endblock %}
+{% extends "gestionar-cosas.html" %}
+{% block title %} Cargar Noticia {% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
 
 {% block body %}
 {{super()}}
-{{ wtf.quick_form(form) }}
 {% endblock %}
