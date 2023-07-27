@@ -44,13 +44,14 @@
                                 Cuenta
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% if current_user.is_authenticated %}
+                                <li><a class="dropdown-item" href="#">{{current_user.nombre}}</a></li>
+                                <li><a class="dropdown-item" href="{{url_for('inicio_sesion')}}">Cerrar sesión</a></li>
+                                {% else %}
                                 <li><a class="dropdown-item" href="{{url_for('inicio_sesion')}}">Iniciar Sesion</a></li>
-                                <li><a class="dropdown-item" href="#">Registrarse</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Usuarios activos</a></li>
-                            </ul>
+                                <li><a class="dropdown-item" href="{{url_for('registro')}}">Registrarse</a></li>
+                                {% endif %}
+                                </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -63,15 +64,11 @@
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='general')}}">General</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='tecnologia')}}">Tecnología</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='internacional')}}">Internacional</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Usuarios activos</a></li>
                             </ul>
                         </li>
                     </ul>
-                    {% if current_user.is_authenticated %}{% if current_user.rol == "administrador" %}<a href="{{url_for('gestion')}}">Gestión de Noticias</a>
-                    <a href="{{url_for('cargarNoticias')}}">Subida de Noticias</a>{% endif %}{% endif %}
+                    {% if current_user.is_authenticated %}{% if current_user.rol == "administrador" %}<a class="dropdown-item" href="{{url_for('gestion')}}">Gestión de Noticias</a>
+                    <a class="dropdown-item" href="{{url_for('cargarNoticias')}}">Subida de Noticias</a>{% endif %}{% endif %}
                 </div>
             </div>
         </nav>
