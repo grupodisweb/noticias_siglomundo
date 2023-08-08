@@ -14,7 +14,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block css %} {% endblock %}
             <link href="{{ url_for('static', filename='/css/noticias.css') }}" rel="stylesheet">
-        <title>{% block title %}{% endblock %} - CUDINOTICIAS</title>
+        <title>{% block title %}{% endblock %} - SigloMundo</title>
         {% endblock %}
     </head>
     <body>
@@ -27,10 +27,11 @@
             </div>
             {% endfor %}
         </div>
-        <div class="cudi-banner"><img class="banner" src="{{ url_for('static', filename='/img/banner back.png') }}"></div>
+        <div class="parent"> <div class="cudi-banner"><img class="banner image1" src="{{ url_for('static', filename='/img/banner back.png') }}"></div> <a class="link-no-button"href="{{url_for('index')}}"><img class="image2" src="{{ url_for('static',filename='img/logo1.png') }}"></a></div>
+        
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{url_for('index')}}">Página principal</a>
+                <a class="navbar-brand link-no-back" href="{{url_for('index')}}">Página principal</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -39,7 +40,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            <a class="nav-link dropdown-toggle link-no-back" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Cuenta
                             </a>
@@ -54,7 +55,7 @@
                                 </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            <a class="nav-link dropdown-toggle link-no-back" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Categorias
                             </a>
@@ -65,10 +66,10 @@
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='tecnologia')}}">Tecnología</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('ir_a_categoria', categoria='internacional')}}">Internacional</a></li>
                             </ul>
+                            {% if current_user.is_authenticated %}{% if current_user.rol == "administrador" %}<li class="nav-item dropdown"><a class="dropdown-item link-no-back" href="{{url_for('gestion')}}">Gestión de Noticias</a></li>
+                            <li class="nav-item dropdown"><a class="dropdown-item link-no-back" href="{{url_for('cargarNoticias')}}">Subida de Noticias</a></li>{% endif %}{% endif %}
                         </li>
                     </ul>
-                    {% if current_user.is_authenticated %}{% if current_user.rol == "administrador" %}<a class="dropdown-item" href="{{url_for('gestion')}}">Gestión de Noticias</a>
-                    <a class="dropdown-item" href="{{url_for('cargarNoticias')}}">Subida de Noticias</a>{% endif %}{% endif %}
                 </div>
             </div>
         </nav>

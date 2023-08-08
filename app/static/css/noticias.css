@@ -18,7 +18,50 @@
 .row-bg {
     background: #d15e92 !important;
 }
+.parent {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  
+.image1 {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+a:link, a:visited {
+    background-color: #d15e92;
+    color: #ffe0f8;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+  
+a:hover, a:active {
+    background-color: #ffe0f8;
+    color: #d15e92;
+}
 
+.link-no-back {
+    background-color: #d15e92 !important;
+    color: #ffe0f8 !important;
+}
+
+.link-no-button {
+    background-color: none !important;
+    color: #ffe0f8 !important;
+    padding: 0px 0px !important;
+    display:contents !important;
+}
+
+.image2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-height: 10vw;
+    width: auto;
+}
 .small-row {
     margin-left: 2vw !important;
     margin-right: 0vw!important;
@@ -83,7 +126,9 @@ h1, .fs-4 {
     justify-content: right;
 
 }
-
+.dropdown-menu {
+    background-color: #d15e92 !important;
+}
 /* .info-column {
     background-color: azure; 
 } */

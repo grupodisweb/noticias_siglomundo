@@ -1,0 +1,28 @@
+{% extends "navbar.html" %}
+{% block title %} {{usuario.nombre}} {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+{{super()}}
+    <div class="container">
+        {% if {{usuario.fotoperfil}} %}
+        <div class="row"><img class="newspage-image" src='/static/img/{{usuario.fotoperfil}}'> </div>
+        {% else %}
+        <div class="row"><img class="newspage-image" src='/static/img/{{usuario.fotoperfil}}'> </div>
+        {% endif %}
+        <div class="row">
+            {% if {{usuario.tituloperfil}} %}
+            <h1 class="news-title fs-1">{{usuario.tituloperfil}}</h1>
+            {% else %} 
+            <h1 class="news-title fs-1">Biografía<a href="{{url_for('modificarusuario',id=(usuario.id))}}"> <img class="icon-img" src="../static/img/editar.png"> </a></h1>
+            {% endif %}
+            {% if {{usuario.biografia}} %}
+            <h3 class="news-title fs-1">{{usuario.biografia}}</h3>
+            {% else %} 
+            <h1 class="news-title fs-1">Añada una biografía aquí.</h1>
+            {% endif %}
+        </div>
+        </div>
+{% endblock %}

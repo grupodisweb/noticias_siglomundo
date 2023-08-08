@@ -10,11 +10,13 @@ import os
 
 from SubirNoticia import SubirNoticia
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from flask_migrate import Migrate
 from ModificarNoticia import Modificar
 from Registro import RegistroForm
 from werkzeug.security import generate_password_hash, check_password_hash 
 from flask_login import *
+from ModificarUsuario import ModificarUsuario
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -29,6 +31,7 @@ migrate = Migrate(app, db)
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
+
 
 class Categoria(db.Model):
     __tablename__ = "Categorías"
@@ -59,6 +62,10 @@ class Usuario(UserMixin, db.Model):
     codigo = db.Column(db.String(128), nullable=False) 
     email = db.Column(db.String(150), unique=True)
     rol = db.Column(db.Integer, nullable=False)
+    biografia = db.Column(db.String(5000), nullable=True)
+    fotoperfil = db.Column(db.String(128), nullable=True)
+    tituloperfil = db.Column(db.String(256), nullable=True)
+
     @property
     def password(self):
         return AttributeError("La contraseña no es visible")
@@ -206,6 +213,14 @@ def gestion():
     noticias = Noticia.query.all()
     return render_template('gestion.html',noticias=noticias)
 
+@app.route('/usuario/<int:id>', methods=['GET', 'POST'])
+def usuario(id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('inicio_sesion'))
+    usuario_a_modificar = Usuario.query.get_or_404(id)
+
+    return render_template('usuario.html', usuario=usuario_a_modificar)
+
 @app.route('/modificar/<int:id>', methods=['GET', 'POST'])
 def modificar(id):
     if not current_user.is_authenticated or current_user.rol != 'administrador':
@@ -214,7 +229,8 @@ def modificar(id):
     modificar = Modificar()
 
     noticia_a_modificar = Noticia.query.get_or_404(id)
-
+    modificar.imagen.choices = getImages()
+    modificar.categoria.choices = getCategorias()
     if request.method == 'POST':
         if modificar.validate_on_submit():
 
@@ -279,5 +295,34 @@ def registro():
         else:
             flash("Los datos enviados no son válidos. Revisar el formulario.")
     return render_template('registro.html', form=registrarse)
+
+@app.route('/modificar-usuario/<int:id>', methods=['GET', 'POST'])
+def modificarUsuario(id):
+    if not current_user.is_authenticated or current_user.id != id:
+        flash('Error. No tiene permisos')
+        return redirect(url_for('inicio_sesion'))
+    modificar = ModificarUsuario()
+
+    usuario_a_modificar = Usuario.query.get_or_404(id)
+    modificar.fotoperfil.choices = getImages()
+    if request.method == 'POST':
+        if modificar.validate_on_submit():
+
+            usuario_a_modificar.fotoperfil    = modificar.fotoperfil.data
+            usuario_a_modificar.tituloperfil    = modificar.tituloperfil.data
+            usuario_a_modificar.biografia = modificar.biografia.data
+            
+            db.session.add(usuario_a_modificar)
+            db.session.commit()
+
+            flash(f"Usuario '{usuario_a_modificar.id}' modificado exitosamente.")
+            return redirect("../usuario/" + str(usuario_a_modificar.id))
+        else:
+            flash("Los datos enviados no son válidos. Revisar el formulario.")
+    
+    modificar.biografia.data     = usuario_a_modificar.biografia
+    modificar.fotoperfil.data    = usuario_a_modificar.fotoperfil
+    modificar.tituloperfil.data  = usuario_a_modificar.tituloperfil
+    return render_template("modificar-usuario.html", form=modificar, usuario_a_modificar=usuario_a_modificar)
 
 app.run(debug=True)

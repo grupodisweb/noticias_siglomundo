@@ -24,7 +24,9 @@ body {
   margin: auto!important;
   outline: auto !important;
   outline-color: #d15e92 !important;
-  background-image: url("../../static/img/loginbackground.jpeg");
+  background-color: #d15e92 !important;
+
+  
 }
 
 .form-modify {
