@@ -48,6 +48,10 @@ a:hover, a:active {
     color: #ffe0f8 !important;
 }
 
+.sticky-column {
+    position: sticky !important;
+}
+
 .profile-pic {
     width: 20vw !important;
     height: auto !important;

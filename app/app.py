@@ -10,7 +10,6 @@ import os
 
 from SubirNoticia import SubirNoticia
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
 from flask_migrate import Migrate
 from ModificarNoticia import Modificar
 from Registro import RegistroForm
@@ -132,12 +131,13 @@ app.jinja_env.globals.update(getCategorias=getCategorias)
 def index():
     tamano = db.session.query(Noticia).count()+1
     noticias = Noticia.query.all()
+    destacada = Noticia.query.filter_by(titulo="Argentina, Campeón del Mundo").first()
     lista_ultimas = []
     for noticia in noticias:
         if noticia.id >= (tamano - 4):
             lista_ultimas.append(noticia)
         
-    return render_template('index.html', noticias=lista_ultimas, tamano=tamano)
+    return render_template('index.html', noticias=lista_ultimas, tamano=tamano, destacada=destacada)
 
 @app.route("/noticias/<int:id>")
 def ir_a_noticia(id):

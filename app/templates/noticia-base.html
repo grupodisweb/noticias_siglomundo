@@ -7,13 +7,28 @@
 {% block body %}
 {{super()}}
     <div class="container">
-        <div class="row"><img class="newspage-image" src='/static/img/{{noticia_buscada.imagen}}'> </div>
-        <div class="row">
-            <h1 class="news-title fs-1">{{noticia_buscada.titulo}}</h1> 
-            <div class="fs-2">{{noticia_buscada.subtitulo}}</div>
-            <div class="fs-4">{{noticia_buscada.resaltado}}</div>
-            <div class="col">{{noticia_buscada.columna1}}</div>
-            <div class="col">{{noticia_buscada.columna2}}</div>
+        <div class= "row no-outline-row align-items-start">
+            <div class="col-md-8">
+                <div class="row"><img class="newspage-image" src='/static/img/{{noticia_buscada.imagen}}'> </div>
+                    <div class="row">
+                        <h1 class="news-title fs-1">{{noticia_buscada.titulo}}</h1> 
+                        <div class="fs-2">{{noticia_buscada.subtitulo}}</div>
+                        <div class="fs-4">{{noticia_buscada.resaltado}}</div>
+                        <div class="col">{{noticia_buscada.columna1}}</div>
+                        <div class="col">{{noticia_buscada.columna2}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 sticky-column">
+                <div class="row small-row">
+                    <div class="info-column">
+                        <h2>Secciones</h2>
+                            <p><a href="#destacada">Noticia Destacada</a></p>
+                            <p><a href="#ultimahora">Última hora</a></p>
+                            <p><a href="#recientes">Noticias Recientes</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-        </div>
+    </div>
 {% endblock %}
