@@ -1,5 +1,5 @@
 {% extends "navbar.html" %}
-{% block title %} {{usuario.nombre}} {% endblock %}
+{% block title %} {{usuario.nombre_usuario}} {% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
@@ -7,22 +7,25 @@
 {% block body %}
 {{super()}}
     <div class="container">
-        {% if {{usuario.fotoperfil}} %}
-        <div class="row"><img class="newspage-image" src='/static/img/{{usuario.fotoperfil}}'> </div>
-        {% else %}
-        <div class="row"><img class="newspage-image" src='/static/img/{{usuario.fotoperfil}}'> </div>
-        {% endif %}
         <div class="row">
-            {% if {{usuario.tituloperfil}} %}
-            <h1 class="news-title fs-1">{{usuario.tituloperfil}}</h1>
-            {% else %} 
-            <h1 class="news-title fs-1">Biografía<a href="{{url_for('modificarusuario',id=(usuario.id))}}"> <img class="icon-img" src="../static/img/editar.png"> </a></h1>
+            {% if usuario.fotoperfil %}
+            <div class="col"><img class="profile-pic" src='/static/img/{{usuario.fotoperfil}}'> <br> <h1 class="profile-pic">{{usuario.nombre_usuario}}</h1></div>
+            {% else %}
+            <div class="col"> <h1>{{usuario.nombre_usuario}}</h1></div>
             {% endif %}
-            {% if {{usuario.biografia}} %}
-            <h3 class="news-title fs-1">{{usuario.biografia}}</h3>
-            {% else %} 
-            <h1 class="news-title fs-1">Añada una biografía aquí.</h1>
-            {% endif %}
+        
+                {% if usuario.titulo %}
+            <div class="col row">
+                <div class="col"><h1 class="news-title fs-1">{{usuario.titulo}}</h1></div><div class="col"><a href="{{url_for('modificarUsuario',nombre=(usuario.nombre_usuario))}}"><img class="icon-img" src="../static/img/editar.png"></a></div>
+                {% else %} 
+                <div class="col"><h1 class="news-title fs-1">Biografía</h1></div><div class="col"><a href="{{url_for('modificarUsuario',nombre=(usuario.nombre_usuario))}}"><img class="icon-img" src="../static/img/editar.png"></a></div>
+                {% endif %}
+                {% if usuario.biografia %}
+                <h3 class="fs-3">{{usuario.biografia}} </h3>
+                {% else %} 
+                <h3 class="fs-3">Añada una biografía aquí.</h3>
+                {% endif %}
+            </div>
         </div>
-        </div>
+    </div>
 {% endblock %}

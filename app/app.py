@@ -64,7 +64,7 @@ class Usuario(UserMixin, db.Model):
     rol = db.Column(db.Integer, nullable=False)
     biografia = db.Column(db.String(5000), nullable=True)
     fotoperfil = db.Column(db.String(128), nullable=True)
-    tituloperfil = db.Column(db.String(256), nullable=True)
+    titulo = db.Column(db.String(256), nullable=True)
 
     @property
     def password(self):
@@ -213,11 +213,11 @@ def gestion():
     noticias = Noticia.query.all()
     return render_template('gestion.html',noticias=noticias)
 
-@app.route('/usuario/<int:id>', methods=['GET', 'POST'])
-def usuario(id):
+@app.route('/usuario/<nombre>', methods=['GET', 'POST'])
+def usuario(nombre):
     if not current_user.is_authenticated:
         return redirect(url_for('inicio_sesion'))
-    usuario_a_modificar = Usuario.query.get_or_404(id)
+    usuario_a_modificar = Usuario.query.filter_by(nombre_usuario=nombre).first()
 
     return render_template('usuario.html', usuario=usuario_a_modificar)
 
@@ -296,33 +296,33 @@ def registro():
             flash("Los datos enviados no son válidos. Revisar el formulario.")
     return render_template('registro.html', form=registrarse)
 
-@app.route('/modificar-usuario/<int:id>', methods=['GET', 'POST'])
-def modificarUsuario(id):
-    if not current_user.is_authenticated or current_user.id != id:
+@app.route('/modificar-usuario/<nombre>', methods=['GET', 'POST'])
+def modificarUsuario(nombre):
+    if not current_user.is_authenticated or current_user.nombre_usuario != nombre:
         flash('Error. No tiene permisos')
         return redirect(url_for('inicio_sesion'))
     modificar = ModificarUsuario()
 
-    usuario_a_modificar = Usuario.query.get_or_404(id)
+    usuario_a_modificar = Usuario.query.filter_by(nombre_usuario=nombre).first()
     modificar.fotoperfil.choices = getImages()
     if request.method == 'POST':
         if modificar.validate_on_submit():
 
-            usuario_a_modificar.fotoperfil    = modificar.fotoperfil.data
-            usuario_a_modificar.tituloperfil    = modificar.tituloperfil.data
-            usuario_a_modificar.biografia = modificar.biografia.data
+            usuario_a_modificar.fotoperfil = modificar.fotoperfil.data
+            usuario_a_modificar.titulo     = modificar.tituloperfil.data
+            usuario_a_modificar.biografia  = modificar.biografia.data
             
             db.session.add(usuario_a_modificar)
             db.session.commit()
 
-            flash(f"Usuario '{usuario_a_modificar.id}' modificado exitosamente.")
-            return redirect("../usuario/" + str(usuario_a_modificar.id))
+            flash(f"Usuario '{usuario_a_modificar.nombre_usuario}' modificado exitosamente.")
+            return redirect("../usuario/" + str(usuario_a_modificar.nombre_usuario))
         else:
             flash("Los datos enviados no son válidos. Revisar el formulario.")
     
-    modificar.biografia.data     = usuario_a_modificar.biografia
-    modificar.fotoperfil.data    = usuario_a_modificar.fotoperfil
-    modificar.tituloperfil.data  = usuario_a_modificar.tituloperfil
-    return render_template("modificar-usuario.html", form=modificar, usuario_a_modificar=usuario_a_modificar)
+    modificar.biografia.data            = usuario_a_modificar.biografia
+    modificar.fotoperfil.data           = usuario_a_modificar.fotoperfil
+    modificar.tituloperfil.data         = usuario_a_modificar.titulo
+    return render_template("modificar-usuario.html", form=modificar, usuario=usuario_a_modificar)
 
 app.run(debug=True)

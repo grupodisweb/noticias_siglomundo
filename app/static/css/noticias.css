@@ -48,6 +48,14 @@ a:hover, a:active {
     color: #ffe0f8 !important;
 }
 
+.profile-pic {
+    width: 20vw !important;
+    height: auto !important;
+    position: relative;
+    top: 10vw;
+    left: 2vw;
+}
+
 .link-no-button {
     background-color: none !important;
     color: #ffe0f8 !important;

@@ -46,7 +46,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if current_user.is_authenticated %}
-                                <li><a class="dropdown-item" href="#">{{current_user.nombre}}</a></li>
+                                <li><a class="dropdown-item" href="{{url_for('usuario',nombre=(current_user.nombre_usuario))}}">{{current_user.nombre_usuario}}</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('inicio_sesion')}}">Cerrar sesión</a></li>
                                 {% else %}
                                 <li><a class="dropdown-item" href="{{url_for('inicio_sesion')}}">Iniciar Sesion</a></li>
