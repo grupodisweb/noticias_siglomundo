@@ -1,10 +1,8 @@
-<html>
-    <head>
+<!DOCTYPE html>
+<html lang="en">
         {% block head %}
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <!--  -->
+            <meta name="viewport" http-equiv="X-UA-Compatible" content="IE=edge" charset="UTF-8">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -14,9 +12,9 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block css %} {% endblock %}
             <link href="{{ url_for('static', filename='/css/noticias.css') }}" rel="stylesheet">
-        <title>{% block title %}{% endblock %} - SigloMundo</title>
+            <title>{% block title %}{% endblock %} - SigloMundo</title>
+        </head>
         {% endblock %}
-    </head>
     <body>
         {% block body %}
         <div class="container"> 
@@ -27,7 +25,7 @@
             </div>
             {% endfor %}
         </div>
-        <div class="parent"> <div class="cudi-banner"><img class="banner image1" src="{{ url_for('static', filename='/img/banner back.png') }}"></div> <a class="link-no-button"href="{{url_for('index')}}"><img class="image2" src="{{ url_for('static',filename='img/logo1.png') }}"></a></div>
+        <div class="parent"> <div class="cudi-banner"><img class="banner image1" alt="banner rosado con un diseño similar a olas" src="{{ url_for('static', filename='/img/banner back.png') }}"></div> <a class="link-no-button" href="{{url_for('index')}}"><img class="image2" src="{{ url_for('static',filename='img/logo1.png') }}"></a></div>
         
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -47,7 +45,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if current_user.is_authenticated %}
                                 <li><a class="dropdown-item" href="{{url_for('usuario',nombre=(current_user.nombre_usuario))}}">{{current_user.nombre_usuario}}</a></li>
-                                <li><a class="dropdown-item" href="{{url_for('inicio_sesion')}}">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" href="{{url_for('cerrar_sesion')}}">Cerrar sesión</a></li>
                                 {% else %}
                                 <li><a class="dropdown-item" href="{{url_for('inicio_sesion')}}">Iniciar Sesion</a></li>
                                 <li><a class="dropdown-item" href="{{url_for('registro')}}">Registrarse</a></li>
@@ -74,9 +72,9 @@
             </div>
         </nav>
         {% endblock %}
-        {% block imagen %} <img class="newspage-image" src={% endblock %}>
+        
     </body>
-    </html>
+    
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init();
@@ -84,3 +82,4 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 {% block scripts %}
 {% endblock %}
+</html>

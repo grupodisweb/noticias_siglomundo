@@ -80,13 +80,6 @@ a:hover, a:active {
 }
 
 .no-outline-row {
-    margin-top: 0!important;
-    margin-left: 0!important;
-    margin-bottom: 0!important;
-    padding-top: 0!important;
-    padding-bottom: 0!important;
-    padding-left: 0!important;
-    padding-right: 0!important;
     outline: none !important;
 }
 body {
@@ -141,6 +134,15 @@ h1, .fs-4 {
 .dropdown-menu {
     background-color: #d15e92 !important;
 }
-/* .info-column {
+.image2 {
+    padding-left: 78%;
+    padding-block-end: 1%;
+    padding-block-start: 2%;
+}
+.cont_4501354f37a61c39b4905ea8dd787a52 {
+    padding-left: 0%;
+    padding-block-start: 00%; 
+}
+    /* .info-column {
     background-color: azure; 
 } */

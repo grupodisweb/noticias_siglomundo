@@ -177,7 +177,11 @@ def inicio_sesion():
             flash('Error. Datos inválidos.')
             
     return render_template('inicio-sesion.html', form=form)
-
+@app.route('/cerrar_sesion')
+def cerrar_sesion():
+    if current_user.is_authenticated:
+        logout_user()
+    return redirect(url_for('index'))
 @app.route('/cargar-noticias', methods=['GET', 'POST'])
 def cargarNoticias():
     updateImg()
