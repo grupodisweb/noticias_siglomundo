@@ -67,6 +67,11 @@
                             {% if current_user.is_authenticated %}{% if current_user.rol == "administrador" %}<li class="nav-item dropdown"><a class="dropdown-item link-no-back" href="{{url_for('gestion')}}">Gestión de Noticias</a></li>
                             <li class="nav-item dropdown"><a class="dropdown-item link-no-back" href="{{url_for('cargarNoticias')}}">Subida de Noticias</a></li>{% endif %}{% endif %}
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-item link-no-back" href="{{url_for('conocenos')}}">
+                                Conócenos
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

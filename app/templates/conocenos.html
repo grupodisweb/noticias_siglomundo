@@ -1,0 +1,21 @@
+{% extends "navbar.html" %}
+{% block title %} ¡Conócenos! {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block body %}
+{{super()}}
+<div class="row no-outline-row align-items-start">
+{% for usuario in devs %}
+    <div class="col-md-6">
+        <div class="row" data-aos="fade-up"><img class="news-img" src= '/static/img/{{usuario.fotoperfil}}' >
+            {{ usuario.biografia }}
+
+            <br>
+            <a href="{{url_for('usuario',nombre=(usuario.nombre_usuario))}}">{{ usuario.nombre_usuario }}</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}

@@ -39,20 +39,32 @@
                 {% endif %}
             {% endfor %}
         </div>
+        <div id="cositas" class="row" data-aos="fade-up" ><h1>Cotización Dólar y Clima</h1><iframe style="margin-bottom: 5vw;width:20vw; height:20vw;border-radius:10px;display:flex;justify-content:center;border:2px solid #d15e92" src="https://dolarhoy.com/i/cotizaciones/dolar-blue" frameborder="0"></iframe>
+            <br>
+            <div class="row" id="cont_4501354f37a61c39b4905ea8dd787a52"><script type="text/javascript">conte = document.getElementById("cont_4501354f37a61c39b4905ea8dd787a52");
+                if (conte) {
+                    conte.style.cssText = "width: 20vw; color: #868686; background-color:#FFFFFF; border:1px solid #D6D6D6; margin: auto; font-family: Arial;";
+                    elem = document.createElement("iframe");
+                    elem.style.cssText = "width:20vw; color:#868686;";
+                    elem.id = "4501354f37a61c39b4905ea8dd787a52";
+                    elem.src = "https://www.meteored.com.ar/getwid/4501354f37a61c39b4905ea8dd787a52";
+                    elem.frameBorder = 0;
+                    elem.allowTransparency = true;
+                    elem.scrolling = "no";
+                    elem.name = "flipe";
+                    conte.appendChild(elem);
+                }</script></div></div>
     </div>
-    <div class="col-md-4 sticky-column" >
+    <div class="col-md-4 sticky-top" >
         <div class="row small-row">
             <div class="info-column">
                 <h2>Secciones</h2>
                     <ul><a href="#destacada">Noticia Destacada</a></ul>
                     <ul><a href="#ultimahora">Última hora</a></ul>
                     <ul><a href="#recientes">Noticias Recientes</a></ul>
+                    <ul><a href="#cositas">Cotización Dólar y Clima</a></ul>
             </div>
-        </div>
-        <div class="row small-row info-column" data-aos="fade-up" ><iframe style="margin-bottom: 5vw;width:320px;height:260px;border-radius:10px;display:flex;justify-content:center;border:2px solid #d15e92" src="https://dolarhoy.com/i/cotizaciones/dolar-blue" frameborder="0"></iframe>
-            <br>
-            <div class="row" id="cont_4501354f37a61c39b4905ea8dd787a52"><script type="text/javascript" async src="https://www.meteored.com.ar/wid_loader/4501354f37a61c39b4905ea8dd787a52"></script></div></div>
-        
+        </div>        
     </div>
 </div>
 

@@ -158,6 +158,17 @@ def ir_a_categoria(categoria):
         return abort(404)
     return render_template("categorias-base.html", noticias=noticias_en_categoria)  
 
+@app.route("/conocenos/")
+def conocenos():
+    devs = []
+    usuarios = Usuario.query.all()
+    for usuario in usuarios:
+        if (usuario.nombre_usuario == "diego" or usuario.nombre_usuario == "fernando"):
+            devs.append(usuario)
+    if not devs:
+        return abort(404)
+    return render_template("conocenos.html", devs=devs) 
+
 @app.route("/inicio-sesion", methods=['POST','GET'])
 def inicio_sesion():
     form = SesionForm() 
