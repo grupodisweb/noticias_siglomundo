@@ -1,6 +1,9 @@
 # noticias_siglomundo
 A simple news website with an easy-to-use interface.
 
+![captura](https://github.com/grupodisweb/noticias_siglomundo/assets/136029363/787b3939-9683-4b11-8a22-4c2040e07979)
+
+
 # Installation:
 ## Setting up the virtual enviorment:
 Install any text editor that allows to create a terminal. We'll be using [Visual Studio Code](https://code.visualstudio.com/download) for this demonstration.
